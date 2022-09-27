@@ -25,13 +25,19 @@
                     <td>{{ $post->update_at }}</td>
                     <td>
                         <a href=" {{ route('admin.posts.show', $post) }}" class="btn btn-primary text-white">
-                            <i class="fa-solid fa-eye">Mostra</i></a>
+                            <i class="fa-solid fa-eye"></i><span class="mx-2">Mostra</span></a>
+                            
+                    </td>
+                    <td>
+                        <a href=" {{ route('admin.posts.edit', $post) }}" class="btn btn-warning text-black">
+                            <i class="fa-solid fa-pencil"><span class="mx-2">Modifica</span></i></a>
+                            
                     </td>
                 </tr>
             @empty
                 <tr>
                     <td class="colspan-6">
-                        <h3 class="text*center">Nessun post</h3>
+                        <h3 class="text-center">Nessun post</h3>
                     </td>
                 </tr>
             @endforelse

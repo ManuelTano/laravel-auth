@@ -12,7 +12,7 @@
         <time>Creato il: {{ $post->created_at }}</time><br>
         <time>Modificato il: {{ $post->updated_at }}</time>
     </header>
-    <footer class="d-flex align-items-center justify-content-end">
+    <footer class="d-flex align-items-center justify-content-end mt-5">
         <div>
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">
                 <i class="fa solid fa-rotate-left mr-2"></i> Indietro
@@ -27,5 +27,7 @@
                 </button>
             </form>
         </div>
+        <a href=" {{ route('admin.posts.edit', $post) }}" class="btn btn-warning text-black">
+            <i class="fa-solid fa-pencil"><span class="mx-2">Modifica</span></i></a>
     </footer>
 @endsection
