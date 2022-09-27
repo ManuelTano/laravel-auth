@@ -37304,6 +37304,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! ./delete_confirmation */ "./resources/js/delete_confirmation.js");
 
+__webpack_require__(/*! ./image_preview */ "./resources/js/image_preview.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -37366,6 +37368,22 @@ deleteForms.forEach(function (form) {
     var hasConfirmed = confirm('Sei sicuro di voler eliminare questo post?');
     if (hasConfirmed) form.submit();
   });
+});
+
+/***/ }),
+
+/***/ "./resources/js/image_preview.js":
+/*!***************************************!*\
+  !*** ./resources/js/image_preview.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var placeholder = "stringa https presa da google immagini";
+var image = document.getElementById('image');
+var preview = document.getElementById('preview');
+image.addEventListener('input', function () {
+  preview.src = image.value || placeholder;
 });
 
 /***/ }),
