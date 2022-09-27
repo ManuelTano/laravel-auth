@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-
     <header>
         <h1>{{ $post->title }}</h1>
         <div>
@@ -21,15 +19,13 @@
             </a>
         </div>
         <div class="d-flex align-items-center justify-content-end">
-            <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST">
+            <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" class="delete-form">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-danger mx-2" type="submit">
-                    <i class="fa-solid fa-trash m-2"></i>Elimina
+                    <i class="fa-solid fa-trash mx-2"></i>Elimina
                 </button>
             </form>
         </div>
     </footer>
-</div>
-
 @endsection
