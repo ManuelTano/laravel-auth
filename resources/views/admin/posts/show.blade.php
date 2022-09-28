@@ -7,6 +7,14 @@
             @if ($post->image)
                 <img class="float-left mr-2" src="{{ $post->image }}" alt="{{ $post->slug }}">
             @endif
+            <p>
+                <strong>Categoria:</strong>
+                @if ($post->category)
+                    {{ $post->category->label }}
+                @else
+                    Nessuna
+                @endif
+            </p>
             <p>{{ $post->content }}</p>
         </div>
         <time>Creato il: {{ $post->created_at }}</time><br>
@@ -28,6 +36,6 @@
             </form>
         </div>
         <a href=" {{ route('admin.posts.edit', $post) }}" class="btn btn-warning text-black">
-            <i class="fa-solid fa-pencil"><span class="mx-2">Modifica</span></i></a>
+            <i class="fa-solid fa-pencil"></i><span class="mx-2">Modifica</span></a>
     </footer>
 @endsection

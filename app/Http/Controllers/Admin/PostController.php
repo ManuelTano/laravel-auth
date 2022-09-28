@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Category;
 
 class PostController extends Controller
 
@@ -18,7 +19,8 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('updated_at', 'DESC')->orderBy('created_at', 'DESC')->get();
-        return view('admin.posts.index', compact('posts'));
+        $categories = Category::all();
+        return view('admin.posts.index', compact('posts', 'categories'));
     }
 
     /**
@@ -29,8 +31,8 @@ class PostController extends Controller
     public function create()
     {
         $post = new Post();
-
-        return view ('admin.posts.create', compact('post'));
+        $categories = Category::select('id', 'label')->get();
+        return view('admin.posts.create', compact('post', 'categories'));
     }
 
     /**
@@ -45,12 +47,14 @@ class PostController extends Controller
             'title' => 'required|string|min:5|max:50|unique:posts',
             'content' => 'required|string',
             'image' => 'nullable|url',
+            'category_id' => 'nullable | exists:categories,id',
             ], [
                 'title.required' => 'Il titolo è obbligatorio',
                 'title.min' => 'Il titolo deve avere almeno :min caratteri',
                 'title.max' => 'Il titolo deve avere almeno :max caratteri',
                 'title.unique' => "Esiste già un post dal titolo $request->title",
-                'image.url' => 'Url dell\'immagine non valido'
+                'image.url' => 'Url dell\'immagine non valido',
+                'category_id.exists' => 'Non esiste una categoria associabile',
             ]);
 
         $data = $request->all();
@@ -89,7 +93,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.posts.edit', compact('post'));
+        $categories = Category::select('id', 'label')->get();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
