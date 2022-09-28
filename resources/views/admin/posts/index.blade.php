@@ -51,4 +51,23 @@
             @endforelse
         </tbody>
     </table>
+
+    <section class="my-5" id="category-posts">
+        <h2 class="mb-4">Post by Categories</h2>
+        <div class="row">
+            @foreach ($categories as $category)
+                <div class="col-3 card">
+
+
+                    <h3 class="my-3">{{ $category->label }} ({{ count($category->posts) }})</h3>
+                    @forelse($category->posts as $post)
+                        <p class="mb-4"><a href="{{ route('admin.posts.show', $post) }}">{{ $post->title }}</a></p>
+
+                    @empty
+                        <span class="my-2">Nessun post</span>
+                    @endforelse
+                </div>
+            @endforeach
+        </div>
+    </section>
 @endsection
