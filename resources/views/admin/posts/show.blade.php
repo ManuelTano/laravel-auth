@@ -2,7 +2,7 @@
 
 @section('content')
     <header>
-        <h1>{{ $post->title }}</h1>
+        <h1 class="my-5">{{ $post->title }}</h1>
         <div>
             @if ($post->image)
                 <img class="float-left mr-2" src="{{ $post->image }}" alt="{{ $post->slug }}">
@@ -16,6 +16,11 @@
                 @endif
             </p>
             <p>{{ $post->content }}</p>
+            @if ($post->user)
+                <strong>Autore:</strong> {{ $post->user->name}}
+                @else
+                Autore anonimo
+                @endif
         </div>
         <time>Creato il: {{ $post->created_at }}</time><br>
         <time>Modificato il: {{ $post->updated_at }}</time>

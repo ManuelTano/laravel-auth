@@ -10,4 +10,14 @@ class UserDetail extends Model
     {
         return $this->belongsTo('App\User');
     }
+    public function getFullName()
+    {
+        return $this->first_name . " " . $this->last_name;
+    }
+    public function getAge()
+    {
+        $thisYear = date('Y');
+
+        return $thisYear - $this->birthyear;
+    }
 }

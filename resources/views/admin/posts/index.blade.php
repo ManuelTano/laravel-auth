@@ -10,6 +10,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Titolo</th>
                 <th scope="col">Categoria</th>
+                <th scope="col">Autore</th>
                 <th scope="col">Slug</th>
                 <th scope="col">Creato il </th>
                 <th scope="col">Modificato il </th>
@@ -29,6 +30,13 @@
                             Nessuna
                         @endif
                     </td>
+                    <td>
+                        @if ($post->user)
+                            {{ $post->user->name }}
+                        @else
+                            Autore anonimo
+                        @endif
+                    </td>
                     <td>{{ $post->slug }}</td>
                     <td>{{ $post->created_at }}</td>
                     <td>{{ $post->update_at }}</td>
@@ -40,6 +48,15 @@
                     <td>
                         <a href=" {{ route('admin.posts.edit', $post) }}" class="btn btn-warning text-black">
                             <i class="fa-solid fa-pencil"></i><span class="mx-2">Modifica</span></a>
+                    </td>
+                    <td>
+                        <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" class="delete-form">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger mx-2" type="submit">
+                                <i class="fa-solid fa-trash mx-2"></i>Elimina
+                            </button>
+                        </form>
                     </td>
                 </tr>
             @empty

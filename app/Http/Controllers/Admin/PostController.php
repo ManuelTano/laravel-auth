@@ -57,21 +57,12 @@ class PostController extends Controller
                 'category_id.exists' => 'Non esiste una categoria associabile',
             ]);
 
-        $data = $request->all();
-	
-        $post = new Post();
-    
-        $data['slug'] = Str::slug($request->title, '-');
-    
-        $post->fill($data);
-        
-        $post->slug = Str::slug($post->title, '-');
-    
-        $post->save();
-    
-        return redirect()->route('admin.posts.show', $post)
-        ->with('message', "Post creato con successo")
-        ->with('type', 'success');//
+            $data = $request->all();
+            $post = new Post();
+            $post->fill($data);
+            $post->slug = Str::slug($post->title, '-');
+            $post->save();
+            return redirect()->route('admin.posts.show', $post)->with('message', "Post creato con successo")->with('type', "success");
     }
 
     /**
@@ -97,17 +88,9 @@ class PostController extends Controller
         return view('admin.posts.edit', compact('post', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Post $post)
     {
         
-
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
         $post->update($data);
