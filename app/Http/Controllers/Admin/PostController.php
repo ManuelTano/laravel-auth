@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Category;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 
@@ -32,7 +34,8 @@ class PostController extends Controller
     {
         $post = new Post();
         $categories = Category::select('id', 'label')->get();
-        return view('admin.posts.create', compact('post', 'categories'));
+        $tags = Tag::select('id', 'label')->get();
+        return view('admin.posts.create', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -48,6 +51,7 @@ class PostController extends Controller
             'content' => 'required|string',
             'image' => 'nullable|url',
             'category_id' => 'nullable | exists:categories,id',
+            'tags' => 'nullable|exists:tags,id',
             ], [
                 'title.required' => 'Il titolo è obbligatorio',
                 'title.min' => 'Il titolo deve avere almeno :min caratteri',
@@ -55,6 +59,7 @@ class PostController extends Controller
                 'title.unique' => "Esiste già un post dal titolo $request->title",
                 'image.url' => 'Url dell\'immagine non valido',
                 'category_id.exists' => 'Non esiste una categoria associabile',
+                'tags.exists' => "Tag indicati non validi",
             ]);
 
             $data = $request->all();
@@ -62,6 +67,8 @@ class PostController extends Controller
             $post->fill($data);
             $post->slug = Str::slug($post->title, '-');
             $post->save();
+            if (!array_key_exists('tags', $data)) $post->tags()->detach();
+            else $post->tags()->sync($data['tags']);
             return redirect()->route('admin.posts.show', $post)->with('message', "Post creato con successo")->with('type', "success");
     }
 
@@ -84,16 +91,41 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $tags = Tag::select('id', 'label')->get();
         $categories = Category::select('id', 'label')->get();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $prev_tags = $post->tags->pluck('id')->toArray();
+        return view('admin.posts.edit', compact('post', 'categories', 'tags', 'prev_tags'));
     }
 
     public function update(Request $request, Post $post)
     {
-        
+
+        $request->validate([
+            'title' => ['required', 'string', 'min:5', 'max:50', Rule::unique('posts')->ignore($post->id)],
+            'content' => 'required|string',
+            'image' => 'nullable|url',
+            'category_id' => 'nullable | exists:categories,id',
+            'tags' => 'nullable|exists:tags,id',
+
+        ], [
+            'title.required' => 'Il titolo è obbligatorio',
+            'content.required' => 'Devi scrivere il contenuto del post',
+            'title.min' => 'Il titolo deve avere almeno :min caratteri',
+            'title.max' => 'Il titolo deve avere almeno :max caratteri',
+            'title.unique' => "Esiste già un post dal titolo $request->title",
+            'image.url' => "Url dell'immagine non valido",
+            'category_id.exists' => 'Non esiste una categoria associabile',
+            'tags.exists' => "Tag indicati non validi",
+        ]);
+
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
+
+
         $post->update($data);
+
+        if (!array_key_exists('tags', $data)) $post->tags()->detach();
+        else $post->tags()->sync($data['tags']);
         return redirect()->route('admin.posts.show', $post)->with('message', "Post modificato con successo")->with('type', "success");
     }
 
