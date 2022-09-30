@@ -20,6 +20,7 @@
         </thead>
         <tbody>
             @forelse($users as $user)
+            
                 <tr class="text-center">
                     <th scope="col">{{ $user->id }}</th>
                     <td>{{ $user->name }}</td>

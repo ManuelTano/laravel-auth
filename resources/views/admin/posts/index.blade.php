@@ -38,7 +38,7 @@
                             Autore anonimo
                         @endif
                     </td>
-                    <td >
+                    <td>
                         <div class="mb-2">
                             @forelse($post->tags as $tag)
                                 <span class="badge text-white p-1"
@@ -50,7 +50,7 @@
                     </td>
                     <td>{{ $post->slug }}</td>
                     <td>{{ $post->created_at }}</td>
-                    <td>{{ $post->update_at }}</td>
+                    <td>{{ $post->updated_at }}</td>
                     <td>
                         <a href=" {{ route('admin.posts.show', $post) }}" class="btn btn-primary text-white">
                             <i class="fa-solid fa-eye"></i><span class="mx-2">Mostra</span></a>

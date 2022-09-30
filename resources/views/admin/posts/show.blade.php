@@ -15,12 +15,22 @@
                     Nessuna
                 @endif
             </p>
-            <p>{{ $post->content }}</p>
-            @if ($post->user)
-                <strong>Autore:</strong> {{ $post->user->name}}
+            <p>
+                @if ($post->user)
+                    <strong>Autore:</strong> {{ $post->user->name }}
                 @else
-                Autore anonimo
+                    Autore anonimo
                 @endif
+            </p>
+            <p>
+                <strong>Tags:</strong>
+                @forelse($post->tags as $tag)
+                    <span class="badge text-white p-1" style="background-color: {{ $tag->color }}">{{ $tag->label }}</span>
+                @empty
+                    Nessun tag
+                @endforelse
+            </p>
+            <p>{{ $post->content }}</p>
         </div>
         <time>Creato il: {{ $post->created_at }}</time><br>
         <time>Modificato il: {{ $post->updated_at }}</time>
