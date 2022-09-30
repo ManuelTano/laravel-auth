@@ -12,6 +12,12 @@ class UserSeeder extends Seeder
      */
     public function run(Faker $faker)
     {
+        $user = new User();
+        $user->name = 'Manu';
+        $user->email = 'manueltano@gmail.com';
+        $user->password = bcrypt('manueltano');
+        $user->save();
+
         for ($i = 0; $i < 9; $i++) {
             $user = new User();
             $user->name = $faker->userName();
